@@ -4,6 +4,7 @@ output:
 linters:
   enable-all: true
   disable:
+    - gofumpt
     - gochecknoglobals
     - maligned
     - golint

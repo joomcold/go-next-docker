@@ -1,23 +1,32 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joomcold/go-next-chat/internal/config"
 )
 
 func init() {
 	config.LoadEnv()
-	config.ConnectPsql()
+
+	_, err := config.ConnectPsql()
+	if err != nil {
+		panic(err)
+	}
 }
 
 func main() {
 	route := gin.Default()
 
 	route.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
+		c.JSON(http.StatusOK, gin.H{
 			"message": "pong",
 		})
 	})
 
-	route.Run()
+	err := route.Run()
+	if err != nil {
+		panic(err)
+	}
 }

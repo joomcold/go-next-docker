@@ -20,7 +20,7 @@ func ConnectPsql() (*gorm.DB, error) {
 		dbUser, dbPassword, dbName, dbHost, dbPort,
 	)
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn))
 	if err != nil {
 		return nil, err
 	}
