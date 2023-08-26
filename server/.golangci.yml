@@ -1,0 +1,23 @@
+output:
+  path-prefix: ""
+
+linters:
+  enable-all: true
+  disable:
+    - gochecknoglobals
+    - maligned
+    - golint
+    - ifshort
+    - scopelint
+    - exhaustivestruct
+    - structcheck
+    - nosnakecase
+    - interfacer
+    - varcheck
+    - deadcode
+    - gochecknoinits
+    - depguard
+    - wrapcheck
+
+run:
+  issues-exit-code: 0
