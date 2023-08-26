@@ -5,15 +5,18 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joomcold/go-next-chat/internal/config"
+	"github.com/joomcold/go-next-chat/internal/database"
 )
 
 func init() {
 	config.Environment()
 
-	_, err := config.Postgresql()
+	DB, err := config.Postgresql()
 	if err != nil {
 		panic(err)
 	}
+
+	database.Migrations(DB)
 }
 
 func main() {
