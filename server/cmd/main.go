@@ -10,7 +10,7 @@ import (
 func init() {
 	config.Environment()
 
-	_, err := config.ConnectPsql()
+	_, err := config.Postgresql()
 	if err != nil {
 		panic(err)
 	}

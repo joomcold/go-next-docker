@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func ConnectPsql() (*gorm.DB, error) {
+func Postgresql() (*gorm.DB, error) {
 	dbUser := os.Getenv("dbUser")
 	dbPassword := os.Getenv("dbPassword")
 	dbName := os.Getenv("dbName")
