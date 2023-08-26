@@ -37,9 +37,6 @@ node_modules/
 .vscode/
 *.iml
 
-# GORM migration files
-migrations/
-
 # Gin debug logs (if you use them)
 gin.log
 

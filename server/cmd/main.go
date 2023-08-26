@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-	config.LoadEnv()
+	config.Environment()
 
 	_, err := config.ConnectPsql()
 	if err != nil {
