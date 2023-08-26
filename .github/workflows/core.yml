@@ -17,6 +17,8 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
+      - name: Change directory to server
+        run: cd server
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
         with:
