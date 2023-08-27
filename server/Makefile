@@ -28,10 +28,10 @@ lint:
 
 # Database commands
 db_create:
-	docker exec -it postgresql psql -U $(dbUser) -c "CREATE DATABASE $(dbName);"
+	docker exec -it postgres psql -U $(dbUser) -c "CREATE DATABASE $(dbName);"
 
 db_drop:
-	docker exec -it postgresql psql -U $(dbUser) -c "DROP DATABASE $(dbName);"
+	docker exec -it postgres psql -U $(dbUser) -c "DROP DATABASE $(dbName);"
 
 .PHONY: db_create db_drop
 
