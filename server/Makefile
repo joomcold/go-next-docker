@@ -18,7 +18,7 @@ clean:
 	rm -f $(BUILD_FILE)
 
 run:
-	$(GOCMD) run $(MAIN_FILE)
+	air
 
 lint:
 	@echo "🏃..."

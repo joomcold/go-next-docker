@@ -44,7 +44,7 @@ gin.log
 *.o
 
 # Temporary files
-*~
+tmp/
 
 # macOS specific files
 .DS_Store
