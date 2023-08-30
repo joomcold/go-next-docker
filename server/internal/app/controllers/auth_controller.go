@@ -6,33 +6,39 @@ import (
 	random "github.com/brianvoe/gofakeit/v6"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/joomcold/go-next-docker/internal/app/controllers/helpers"
 	"github.com/joomcold/go-next-docker/internal/app/models"
 	"github.com/joomcold/go-next-docker/internal/initializers"
 )
 
 func Register(c *gin.Context) {
-	var db = initializers.DB
-
-	var body struct {
-		Name                 string
-		Email                string
-		Password             string
-		PasswordConfirmation string
-		Address              string
+	type FormData struct {
+		Email                string `form:"email"`
+		Password             string `form:"password"`
+		PasswordConfirmation string `form:"password_confirmation"`
 	}
 
-	err := c.Bind(&body)
+	var (
+		db   = initializers.DB
+		form FormData
+	)
+
+	err := c.Bind(&form)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
 
 		return
 	}
 
+	helpers.EncryptPassword(form.Password, form.PasswordConfirmation, c)
+
 	user := models.User{
-		ID:      uuid.New(),
-		Name:    random.Name(),
-		Email:   body.Email,
-		Address: random.Address().Address,
+		ID:                   uuid.New(),
+		Name:                 random.Name(),
+		Email:                form.Email,
+		Password:             form.Password,
+		PasswordConfirmation: form.PasswordConfirmation,
+		Address:              random.Address().Address,
 	}
 
 	object := db.Create(&user)
