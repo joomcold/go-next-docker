@@ -1,4 +1,4 @@
-package config
+package initializers
 
 import (
 	"fmt"
@@ -8,7 +8,10 @@ import (
 	"gorm.io/gorm"
 )
 
-func Postgresql() (*gorm.DB, error) {
+var DB *gorm.DB
+var err error
+
+func Postgresql() {
 	dbUser := os.Getenv("dbUser")
 	dbPassword := os.Getenv("dbPassword")
 	dbName := os.Getenv("dbName")
@@ -20,10 +23,8 @@ func Postgresql() (*gorm.DB, error) {
 		dbUser, dbPassword, dbName, dbHost, dbPort,
 	)
 
-	db, err := gorm.Open(postgres.Open(dsn))
+	DB, err = gorm.Open(postgres.Open(dsn))
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
-
-	return db, nil
 }

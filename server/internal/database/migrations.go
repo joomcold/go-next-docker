@@ -1,12 +1,12 @@
 package database
 
 import (
-	"github.com/joomcold/go-next-chat/internal/app/models"
-	"gorm.io/gorm"
+	"github.com/joomcold/go-next-docker/internal/app/models"
+	"github.com/joomcold/go-next-docker/internal/initializers"
 )
 
-func Migrations(db *gorm.DB) {
-	err := db.AutoMigrate(&models.User{})
+func Migrations() {
+	err := initializers.DB.AutoMigrate(&models.User{})
 	if err != nil {
 		panic("Failed to migrate models")
 	}

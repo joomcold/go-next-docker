@@ -1,4 +1,4 @@
-module github.com/joomcold/go-next-chat
+module github.com/joomcold/go-next-docker
 
 go 1.21.0
 

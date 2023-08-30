@@ -1,32 +1,19 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
-	"github.com/joomcold/go-next-chat/internal/config"
-	"github.com/joomcold/go-next-chat/internal/database"
+	"github.com/joomcold/go-next-docker/internal/database"
+	"github.com/joomcold/go-next-docker/internal/initializers"
 )
 
 func init() {
-	config.Environment()
-
-	DB, err := config.Postgresql()
-	if err != nil {
-		panic(err)
-	}
-
-	database.Migrations(DB)
+	initializers.Environment()
+	initializers.Postgresql()
+	database.Migrations()
 }
 
 func main() {
 	route := gin.Default()
-
-	route.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
 
 	err := route.Run()
 	if err != nil {
