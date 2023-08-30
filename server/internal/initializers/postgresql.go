@@ -8,8 +8,10 @@ import (
 	"gorm.io/gorm"
 )
 
-var DB *gorm.DB
-var err error
+var (
+	DB  *gorm.DB
+	err error
+)
 
 func Postgresql() {
 	dbUser := os.Getenv("dbUser")

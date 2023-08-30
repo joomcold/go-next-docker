@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/joomcold/go-next-docker/internal/configs"
 	"github.com/joomcold/go-next-docker/internal/database"
 	"github.com/joomcold/go-next-docker/internal/initializers"
 )
@@ -13,10 +13,5 @@ func init() {
 }
 
 func main() {
-	route := gin.Default()
-
-	err := route.Run()
-	if err != nil {
-		panic(err)
-	}
+	configs.Routes()
 }
