@@ -12,3 +12,9 @@ type User struct {
 	Address  string
 	Timestamp
 }
+
+type NewUser struct {
+	ID    uuid.UUID
+	Name  string
+	Email string
+}

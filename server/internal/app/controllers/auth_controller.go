@@ -4,18 +4,18 @@ import (
 	"net/http"
 
 	random "github.com/brianvoe/gofakeit/v6"
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
-	"github.com/joomcold/go-next-docker/internal/app/controllers/helpers"
 	"github.com/joomcold/go-next-docker/internal/app/models"
 	"github.com/joomcold/go-next-docker/internal/initializers"
+	"golang.org/x/crypto/bcrypt"
 )
 
-func Register(c *gin.Context) {
+func Register(c *fiber.Ctx) error {
 	type FormData struct {
-		Email                string `form:"email"`
-		Password             string `form:"password"`
-		PasswordConfirmation string `form:"password_confirmation"`
+		Email                string `json:"email"`
+		Password             string `json:"password"`
+		PasswordConfirmation string `json:"passwordConfirmation"`
 	}
 
 	var (
@@ -23,30 +23,50 @@ func Register(c *gin.Context) {
 		form FormData
 	)
 
-	err := c.Bind(&form)
+	err := c.BodyParser(&form)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
-
-		return
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status": "error", "message": "Invalid input", "data": err,
+		})
 	}
 
-	helpers.EncryptPassword(form.Password, form.PasswordConfirmation, c)
+	if form.Password != form.PasswordConfirmation {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status": "error", "message": "Password and Password Confirmation do not match",
+		})
+	}
+
+	cost := 10
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(form.Password), cost)
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"status": "error", "message": "Failed to hash password",
+		})
+	}
 
 	user := models.User{
-		ID:                   uuid.New(),
-		Name:                 random.Name(),
-		Email:                form.Email,
-		Password:             form.Password,
-		PasswordConfirmation: form.PasswordConfirmation,
-		Address:              random.Address().Address,
+		ID:       uuid.New(),
+		Name:     random.Name(),
+		Email:    form.Email,
+		Password: string(hashedPassword),
+		Address:  random.Address().Address,
 	}
 
-	object := db.Create(&user)
-	if object.Error != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to register"})
-
-		return
+	err = db.Create(&user).Error
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"status": "error", "message": "Failed to register", "data": err.Error(),
+		})
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Registration successful"})
+	newUser := models.NewUser{
+		ID:    user.ID,
+		Name:  user.Name,
+		Email: user.Email,
+	}
+
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status": "successful", "message": "Registration successfully", "data": newUser,
+	})
 }
