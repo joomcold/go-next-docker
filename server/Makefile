@@ -50,6 +50,11 @@ generate_model:
 
 .PHONY: generate_model
 
+# Do seeds data
+SEED_DIR = internal/database/seed
+seed:
+	go run $(SEED_DIR)/$(model).go
+
 # Help for displaying available commands
 help:
 	@echo "💡 Available commands:"
@@ -61,3 +66,4 @@ help:
 	@echo " - make db_create"
 	@echo " - make db_drop"
 	@echo " - make generate_model name=user"
+	@echo " - make seed model=post"
