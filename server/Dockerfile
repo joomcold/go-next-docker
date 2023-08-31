@@ -4,10 +4,10 @@ WORKDIR /server
 
 RUN go install github.com/cosmtrek/air@latest
 
+#Copying files to work directory
+COPY go.mod ./
+RUN go mod download && go mod verify
 COPY . .
-
-# RUN go build -o app cmd/main.go
-RUN go mod download
 
 EXPOSE 8080
 

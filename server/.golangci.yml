@@ -15,6 +15,7 @@ linters:
     - structcheck
     - nosnakecase
     - interfacer
+    - varnamelen
     - varcheck
     - deadcode
     - gochecknoinits
