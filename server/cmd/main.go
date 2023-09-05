@@ -1,8 +1,12 @@
 package main
 
 import (
+	"os"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/csrf"
+	"github.com/gofiber/fiber/v2/middleware/encryptcookie"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/requestid"
 	"github.com/joomcold/go-next-docker/internal/app/router"
@@ -20,10 +24,31 @@ func main() {
 	app := fiber.New()
 
 	app.Use(cors.New())
+	app.Use(encryptcookie.New(encryptcookie.Config{
+		Key:    os.Getenv("COOKIE_KEY"),
+		Except: []string{"csrf_token"},
+	}))
+	app.Use(csrf.New(csrf.Config{
+		CookieName:     "csrf_token",
+		CookieSecure:   true,
+		CookieHTTPOnly: true,
+		ErrorHandler: func(c *fiber.Ctx, err error) error {
+			return c.JSON(fiber.Map{"csrf_token:": fiber.StatusForbidden})
+		},
+	}))
 	app.Use(requestid.New())
 	app.Use(logger.New(logger.Config{
 		TimeZone: "Asia/Bangkok",
 	}))
+
+	app.Get("/hello", func(c *fiber.Ctx) error {
+		c.Cookie(&fiber.Cookie{
+			Name:  "hello",
+			Value: "Hi there !!",
+		})
+
+		return c.JSON(fiber.Map{"enc_cookie": c.Cookies("hello")})
+	})
 
 	// Assign routes
 	router.SetupRoutes(app)

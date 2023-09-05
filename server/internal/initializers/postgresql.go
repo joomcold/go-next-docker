@@ -14,11 +14,11 @@ var (
 )
 
 func Postgresql() {
-	dbUser := os.Getenv("dbUser")
-	dbPassword := os.Getenv("dbPassword")
-	dbName := os.Getenv("dbName")
-	dbHost := os.Getenv("dbHost")
-	dbPort := os.Getenv("dbPort")
+	dbUser := os.Getenv("DB_USER")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbName := os.Getenv("DB_NAME")
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
 
 	dsn := fmt.Sprintf(
 		"user=%s password=%s dbname=%s host=%s port=%s sslmode=disable",
