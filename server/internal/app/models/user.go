@@ -5,16 +5,10 @@ import (
 )
 
 type User struct {
-	ID       uuid.UUID `gorm:"type:uuid;primaryKey"`
-	Name     string
-	Email    string `gorm:"unique;not null"`
-	Password string `gorm:"not null"`
-	Address  string
+	ID       uuid.UUID `json:"id" gorm:"type:uuid;primaryKey"`
+	Name     string    `json:"name"`
+	Email    string    `json:"email" gorm:"unique;not null"`
+	Password string    `json:"-" gorm:"not null"`
+	Address  string    `json:"address"`
 	Timestamp
-}
-
-type NewUser struct {
-	ID    uuid.UUID
-	Name  string
-	Email string
 }

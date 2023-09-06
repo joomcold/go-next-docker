@@ -10,7 +10,7 @@ import (
 )
 
 func Register(c *fiber.Ctx) error {
-	type FormData struct {
+	type formData struct {
 		Email                string `json:"email"`
 		Password             string `json:"password"`
 		PasswordConfirmation string `json:"passwordConfirmation"`
@@ -18,14 +18,14 @@ func Register(c *fiber.Ctx) error {
 
 	var (
 		db   = initializers.DB
-		form FormData
+		form formData
 	)
 
 	// Parse body into form
 	err := c.BodyParser(&form)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"status": "error", "message": "Invalid input", "data": err,
+			"status": "error", "message": "Invalid input",
 		})
 	}
 
@@ -60,36 +60,7 @@ func Register(c *fiber.Ctx) error {
 		})
 	}
 
-	// Return user value
-	newUser := models.NewUser{
-		ID:    user.ID,
-		Name:  user.Name,
-		Email: user.Email,
-	}
-
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
-		"status": "successful", "message": "Registration successfully", "data": newUser,
+		"status": "successful", "message": "Registration successfully", "data": user,
 	})
-}
-
-func Login(c *fiber.Ctx) error {
-	type FormData struct {
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}
-
-	var (
-		// db   = initializers.DB
-		form FormData
-	)
-
-	// Parse body into form
-	err := c.BodyParser(&form)
-	if err != nil || form.Email == "" || form.Password == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"status": "error", "message": "Invalid input", "data": err,
-		})
-	}
-
-	return nil
 }

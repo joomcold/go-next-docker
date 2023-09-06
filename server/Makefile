@@ -38,11 +38,11 @@ db_drop:
 # Model commands
 MODEL_DIR = internal/app/models
 
-generate_model:
-	@if [ -n "$(name)" ]; then \
-		touch $(MODEL_DIR)/$(name).go; \
-		echo "🚀... \"$(name).go\" generated in \"$(MODEL_DIR)\""; \
-		echo "package models\n\ntype $(name) struct {}" > $(MODEL_DIR)/$(name).go; \
+generate:
+	@if [ -n "$(model)" ]; then \
+		touch $(MODEL_DIR)/$(model).go; \
+		echo "🚀... \"$(model).go\" generated in \"$(MODEL_DIR)\""; \
+		echo "package models\n\ntype $(model) struct {}" > $(MODEL_DIR)/$(model).go; \
 		echo "Don't forget to add a model into \"migrations.go\" 👍"; \
 	else \
 		echo "'name' is not defined. Please provide a name to generate a file, e.g., make generate_model name=mymodel"; \
@@ -65,5 +65,5 @@ help:
 	@echo " - make lint"
 	@echo " - make db_create"
 	@echo " - make db_drop"
-	@echo " - make generate_model name=user"
+	@echo " - make generate model=user"
 	@echo " - make seed model=post"
