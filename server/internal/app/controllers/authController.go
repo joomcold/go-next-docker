@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"os"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -49,12 +50,12 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	// Create JWT token
-	claim := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.RegisteredClaims{
+	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.RegisteredClaims{
 		Issuer:    user.ID.String(),
 		ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
 	})
 
-	token, err := claim.SignedString([]byte("mango"))
+	token, err := claims.SignedString([]byte(os.Getenv("JWT_KEY")))
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"status": "error", "message": "Could not login",
@@ -72,5 +73,19 @@ func Login(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "successful", "message": "Login successfully",
+	})
+}
+
+func Logout(c *fiber.Ctx) error {
+	cookie := fiber.Cookie{
+		Name:     "jwt_token",
+		Value:    "",
+		Expires:  time.Now().Add(-time.Hour),
+		HTTPOnly: true,
+	}
+	c.Cookie(&cookie)
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "successful", "message": "Logout successfully",
 	})
 }

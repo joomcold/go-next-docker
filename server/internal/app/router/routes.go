@@ -6,6 +6,14 @@ import (
 )
 
 func SetupRoutes(app *fiber.App) {
-	app.Post("/register", controllers.Register)
-	app.Post("/login", controllers.Login)
+	auth := app.Group("/")
+	auth.Post("/login", controllers.Login)
+	auth.Post("/logout", controllers.Logout)
+
+	user := app.Group("/")
+	profile := "/profile"
+	user.Post("/register", controllers.Register)
+	user.Get(profile, controllers.Profile)
+	user.Post(profile, controllers.UpdateUser)
+	user.Delete(profile, controllers.CancelUser)
 }
