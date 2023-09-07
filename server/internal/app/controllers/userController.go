@@ -93,7 +93,12 @@ func Register(c *fiber.Ctx) error {
 func Profile(c *fiber.Ctx) error {
 	var user models.User
 
-	findUserByToken(c, &user)
+	err := findUserByToken(c, &user)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"status": "error", "message": err.Error(),
+		})
+	}
 
 	return c.JSON(user)
 }
@@ -118,7 +123,12 @@ func UpdateUser(c *fiber.Ctx) error {
 		})
 	}
 
-	findUserByToken(c, &user)
+	err = findUserByToken(c, &user)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"status": "error", "message": err.Error(),
+		})
+	}
 
 	// Check user email
 	if user.ID.String() == "" {
@@ -148,7 +158,12 @@ func UpdateUser(c *fiber.Ctx) error {
 func CancelUser(c *fiber.Ctx) error {
 	var user models.User
 
-	findUserByToken(c, &user)
+	err := findUserByToken(c, &user)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"status": "error", "message": err.Error(),
+		})
+	}
 
 	initializers.DB.Delete(&user)
 

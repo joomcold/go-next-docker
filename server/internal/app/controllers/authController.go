@@ -18,7 +18,6 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	var (
-		db   = initializers.DB
 		form FormData
 		user models.User
 	)
@@ -31,8 +30,7 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	// Find user by email
-	db.Find(&user, "email = ?", form.Email)
+	initializers.DB.Find(&user, "email = ?", form.Email)
 
 	// Check user email
 	if user.Email == "" {

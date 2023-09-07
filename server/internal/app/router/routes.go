@@ -12,6 +12,7 @@ func SetupRoutes(app *fiber.App) {
 
 	user := app.Group("/")
 	profile := "/profile"
+
 	user.Post("/register", controllers.Register)
 	user.Get(profile, controllers.Profile)
 	user.Post(profile, controllers.UpdateUser)

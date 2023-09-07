@@ -20,7 +20,8 @@ linters:
     - deadcode
     - gochecknoinits
     - depguard
-    - mnd
+    - gomnd
+    - forcetypeassert
     - wrapcheck
 
 run:
