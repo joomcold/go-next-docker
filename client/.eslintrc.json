@@ -25,6 +25,12 @@
   "globals": {
     "React": "readonly"
   },
+  "ignorePatterns": [
+    "node_modules/",
+    "build/",
+    "next.config.js",
+    "dist/"
+  ],
   "rules": {
     "no-unused-vars": ["error", { "args": "none" }],
     "no-console": ["error", { "allow": ["warn", "error"] }],
@@ -45,8 +51,11 @@
     "no-eval": "error",
     "no-extra-boolean-cast": "error",
     "no-floating-decimal": "error",
-    "prefer-includes": "error",
     "no-useless-return": "error",
-    "no-with": "error"
+    "no-with": "error",
+    "no-empty-function": "error",
+    "no-debugger": "error",
+    "arrow-parens": ["error", "always"],
+    "func-names": ["error", "never"]
   }
 }
