@@ -1,3 +1,8 @@
 @import '../styles/base';
-@import '../styles/mixins';
-@import '../styles/variables';
+@import '../styles/light';
+@import '../styles/dark';
+
+body {
+  background-color: $background-color;
+  color: $text-color;
+}
