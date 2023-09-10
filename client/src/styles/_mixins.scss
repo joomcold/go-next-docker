@@ -1,0 +1,16 @@
+@mixin theme($theme: DarkGray) {
+  background: $theme;
+  color: #fff;
+}
+
+.body-container {
+  @include theme;
+}
+
+.alert {
+  @include theme($theme: DarkRed);
+}
+
+.success {
+  @include theme($theme: DarkGreen);
+}
