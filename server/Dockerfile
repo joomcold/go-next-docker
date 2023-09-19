@@ -4,7 +4,7 @@ WORKDIR /server
 
 RUN go install github.com/cosmtrek/air@latest
 
-#Copying files to work directory
+# Copying files to work directory
 COPY go.mod ./
 RUN go mod download && go mod verify
 COPY . .

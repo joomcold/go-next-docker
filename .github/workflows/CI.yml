@@ -1,4 +1,4 @@
-name: Core
+name: CI
 on: [push]
 # on:
 #   push:
@@ -13,8 +13,22 @@ permissions:
   # pull-requests: read
 
 jobs:
+  eslint:
+    name: Frontend-Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm install -g yarn
+      - run: yarn install
+        working-directory: client
+      - run: yarn lint
+        working-directory: client
+
   golangci:
-    name: Lint
+    name: Backend-Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
